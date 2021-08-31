@@ -289,7 +289,11 @@ func download(d deps.Dependency, vendorDir string) (*deps.Dependency, error) {
 
 	version, err := p.Install(context.TODO(), d.Name(), vendorDir, d.Version)
 	if err != nil {
-		return nil, err
+		d.Version = "main"
+		version, err = p.Install(context.TODO(), d.Name(), vendorDir, d.Version)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var sum string
